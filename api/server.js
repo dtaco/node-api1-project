@@ -1,6 +1,7 @@
 
 const express = require('express')
 const server = express()
+server.use(express.json())
 
 const User = require('./users/model')
 
@@ -38,6 +39,16 @@ server.get('/api/users/:id', (req, res) => {
                 stack: err.stack,
             })
         })
+})
+
+server.post('/api/users', (req, res) => {
+    const user = req.body;
+
+    if( !user.name || !user.bio ) {
+        res.status(422).json({ message: 'Please provide name and bio.' })
+    }else{User.insert(user)
+        }
+    
 })
 
 server.use('*', (req, res) => {
